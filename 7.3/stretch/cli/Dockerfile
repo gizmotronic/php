@@ -140,6 +140,8 @@ RUN set -eux; \
 	if [ ! -d /usr/include/curl ]; then \
 		ln -sT "/usr/include/$debMultiarch/curl" /usr/local/include/curl; \
 	fi; \
+# fix cookie Expires date format; see https://tools.ietf.org/html/rfc7231#section-7.1.1.1
+	sed -i"" -e "s/D, d-M-Y H:i:s T/D, d M Y H:i:s T/g" ext/standard/head.c ext/session/session.c; \
 	./configure \
 		--build="$gnuArch" \
 		--with-config-file-path="$PHP_INI_DIR" \
